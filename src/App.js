@@ -76,15 +76,19 @@ function App() {
     //drag and drop functions
     const dragStart = (event) => {
         setCandyBeingDragged(event.target)
-        console.log("dragStarted")
+
     }
     const dragDrop = (event) => {
         setCandyBeingReplaced(event.target)
-        console.log("dragDropped")
-        console.log(candyBeingDragged)
+
     }
     const dragEnd = (event) => {
-        console.log("dragEnded")
+        const squareBeingReplacedId = + candyBeingReplaced.getAttribute("data-id")
+        const squareBeingDraggedId = + candyBeingDragged.getAttribute("data-id")
+        //switching squares
+        currentColorArrangement[squareBeingDraggedId]=candyBeingReplaced.style.backgroundColor
+        currentColorArrangement[squareBeingReplacedId]=candyBeingDragged.style.backgroundColor
+
     }
 
     //creating an array of 8*8 = 64 square each one is a random color from the candyColors array
