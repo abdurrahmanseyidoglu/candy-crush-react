@@ -11,7 +11,7 @@ function App() {
 
     //check for columns of four of the same color
     const checkForColumnOfFour = () => {
-        for (let i = 0; i < 36; i++) {
+        for (let i = 0; i <= 39; i++) {
             const columnOfFour = [i, i + boardWidth, i + (boardWidth * 2), i + (boardWidth * 3)]
             const currentColor = currentColorArrangement[i]
             if (columnOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
@@ -21,7 +21,7 @@ function App() {
     }
     //check for columns of three of the same color
     const checkForColumnOfThree = () => {
-        for (let i = 0; i < 47; i++) {
+        for (let i = 0; i <= 47; i++) {
             const columnOfThree = [i, i + boardWidth, i + (boardWidth * 2)]
             const currentColor = currentColorArrangement[i]
             if (columnOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
@@ -59,7 +59,7 @@ function App() {
 
     //move blank colors down and generate new colors replacing the removed ones
     const moveIntoSquareBelow = () => {
-        for (let i = 0; i < 64 - boardWidth; i++) {
+        for (let i = 0; i <= 55; i++) {
             const firstRow = [0, 1, 2, 3, 4, 5, 6, 7]
             const isFirstRow = firstRow.includes(i)
             if (isFirstRow && currentColorArrangement[i] === '') {
