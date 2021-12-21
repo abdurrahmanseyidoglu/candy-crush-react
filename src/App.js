@@ -100,7 +100,6 @@ function App() {
         return () => clearInterval(timer)
     }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveIntoSquareBelow, currentColorArrangement])
 
-    console.log(currentColorArrangement)
     return (<div className="app">
         <div className="game">
             {currentColorArrangement.map((candyColor, index) => {
