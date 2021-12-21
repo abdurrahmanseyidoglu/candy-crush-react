@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-let width = 8
+let boardWidth = 8
 const candyColors = ["blue", "green", "orange", 'purple', "red", 'yellow']
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     //check for columns of four of the same color
     const checkForColumnOfFour = () => {
         for (let i = 0; i < 36; i++) {
-            const columnOfFour = [i, i + width, i + (width * 2), i + (width * 3)]
+            const columnOfFour = [i, i + boardWidth, i + (boardWidth * 2), i + (boardWidth * 3)]
             const currentColor = currentColorArrangement[i]
             if (columnOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 columnOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
@@ -18,7 +18,7 @@ function App() {
     //check for columns of three of the same color
     const checkForColumnOfThree = () => {
         for (let i = 0; i < 47; i++) {
-            const columnOfThree = [i, i + width, i + (width * 2)]
+            const columnOfThree = [i, i + boardWidth, i + (boardWidth * 2)]
             const currentColor = currentColorArrangement[i]
             if (columnOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 columnOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
@@ -29,11 +29,11 @@ function App() {
 
     const checkForRowOfFour = () => {
         for (let i = 0; i < 64; i++) {
-            const rowOfFour = [i, i + 1, i + 2,i+3]
+            const rowOfFour = [i, i + 1, i + 2, i + 3]
             const currentColor = currentColorArrangement[i]
             //preventing check repeating for every last three squares of every row
-            const notValid = [6,7, 8,14, 15, 16,21, 22, 23,29, 30, 31, 37,38, 39,45, 46, 47, 53,54, 55,62, 63, 64]
-            if(notValid.includes(i)) continue
+            const notValid = [6, 7, 8, 14, 15, 16, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64]
+            if (notValid.includes(i)) continue
             if (rowOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 rowOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
             }
@@ -46,17 +46,35 @@ function App() {
             const currentColor = currentColorArrangement[i]
             //preventing check repeating for every last two squares of every row
             const notValid = [7, 8, 15, 16, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
-            if(notValid.includes(i)) continue
+            if (notValid.includes(i)) continue
             if (rowOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 rowOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
             }
         }
     }
 
+    //move blank colors down and generate new colors replacing the removed ones
+    const moveIntoSquareBelow = () => {
+        for (let i = 0; i < 64 - boardWidth; i++) {
+            const firstRow = [0, 1, 2, 3, 4, 5, 6, 7]
+            const isFirstRow = firstRow.includes(i)
+            if (isFirstRow && currentColorArrangement[i] === '') {
+                let randomNumber = Math.floor(Math.random() * candyColors.length)
+                currentColorArrangement[i] = candyColors[randomNumber]
+            }
+            if (currentColorArrangement[i + boardWidth] === '') {
+                currentColorArrangement[i + boardWidth] = currentColorArrangement[i]
+                currentColorArrangement[i] = ''
+            }
+        }
+
+    }
+
+
     //creating an array of 8*8 = 64 square each one is a random color from the candyColors array
     const createBoard = () => {
         const randomColorArrangement = []
-        for (let i = 0; i < width * width; i++) {
+        for (let i = 0; i < boardWidth * boardWidth; i++) {
             const randomColor = candyColors[Math.floor(Math.random() * candyColors.length)]
             randomColorArrangement.push(randomColor)
         }
@@ -74,11 +92,13 @@ function App() {
             checkForColumnOfFour()
             checkForColumnOfThree()
             checkForRowOfThree()
+            moveIntoSquareBelow()
+
 
             setCurrentColorArrangement([...currentColorArrangement])
         }, 100)
         return () => clearInterval(timer)
-    }, [checkForColumnOfFour,checkForRowOfFour, checkForColumnOfThree,checkForRowOfThree, currentColorArrangement])
+    }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveIntoSquareBelow, currentColorArrangement])
 
     console.log(currentColorArrangement)
     return (<div className="app">
