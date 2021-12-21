@@ -25,7 +25,33 @@ function App() {
             }
         }
     }
+    //check for rows of four of the same color
 
+    const checkForRowOfFour = () => {
+        for (let i = 0; i < 64; i++) {
+            const rowOfFour = [i, i + 1, i + 2,i+3]
+            const currentColor = currentColorArrangement[i]
+            //preventing check repeating for every last three squares of every row
+            const notValid = [6,7, 8,14, 15, 16,21, 22, 23,29, 30, 31, 37,38, 39,45, 46, 47, 53,54, 55,62, 63, 64]
+            if(notValid.includes(i)) continue
+            if (rowOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+                rowOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+            }
+        }
+    }
+    //check for rows of three of the same color
+    const checkForRowOfThree = () => {
+        for (let i = 0; i < 64; i++) {
+            const rowOfThree = [i, i + 1, i + 2]
+            const currentColor = currentColorArrangement[i]
+            //preventing check repeating for every last two squares of every row
+            const notValid = [7, 8, 15, 16, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
+            if(notValid.includes(i)) continue
+            if (rowOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+                rowOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+            }
+        }
+    }
 
     //creating an array of 8*8 = 64 square each one is a random color from the candyColors array
     const createBoard = () => {
@@ -45,12 +71,14 @@ function App() {
     useEffect(() => {
         const timer = setInterval(() => {
             checkForColumnOfFour()
+            checkForColumnOfFour()
             checkForColumnOfThree()
+            checkForRowOfThree()
 
             setCurrentColorArrangement([...currentColorArrangement])
         }, 100)
         return () => clearInterval(timer)
-    }, [checkForColumnOfFour, checkForColumnOfThree, currentColorArrangement])
+    }, [checkForColumnOfFour,checkForRowOfFour, checkForColumnOfThree,checkForRowOfThree, currentColorArrangement])
 
     console.log(currentColorArrangement)
     return (<div className="app">
