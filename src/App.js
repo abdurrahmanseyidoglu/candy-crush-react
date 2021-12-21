@@ -3,8 +3,12 @@ import {useEffect, useState} from "react";
 let boardWidth = 8
 const candyColors = ["blue", "green", "orange", 'purple', "red", 'yellow']
 
+
 function App() {
     const [currentColorArrangement, setCurrentColorArrangement] = useState([])
+    const [candyBeingDragged, setCandyBeingDragged] = useState(null)
+    const [candyBeingReplaced, setCandyBeingReplaced] = useState(null)
+
     //check for columns of four of the same color
     const checkForColumnOfFour = () => {
         for (let i = 0; i < 36; i++) {
@@ -69,7 +73,18 @@ function App() {
         }
 
     }
-
+    //drag and drop functions
+    const dragStart = (event) => {
+        setCandyBeingDragged(event.target)
+        console.log("dragStarted")
+    }
+    const dragDrop = (event) => {
+        setCandyBeingReplaced(event.target)
+        console.log("dragDropped")
+    }
+    const dragEnd = (event) => {
+        console.log("dragEnded")
+    }
 
     //creating an array of 8*8 = 64 square each one is a random color from the candyColors array
     const createBoard = () => {
@@ -85,7 +100,7 @@ function App() {
         createBoard()
     }, [])
 
-    //call checkForColumnOfThree when the component gets mount and keep calling it every 100 ms
+    //call these functions when the component gets mount and keep calling it every 100 ms
     useEffect(() => {
         const timer = setInterval(() => {
             checkForColumnOfFour()
@@ -103,7 +118,18 @@ function App() {
     return (<div className="app">
         <div className="game">
             {currentColorArrangement.map((candyColor, index) => {
-                return (<img key={index} style={{backgroundColor: candyColor}}/>)
+                return (<img key={index} style={{backgroundColor: candyColor}} alt="colors"
+                    //adding drag-drop functionality
+                             data-id={index}
+                             draggable={true}
+                             onDragStart={dragStart}
+                    // onDragOver={(e) => e.preventDefault()}
+                    // onDragEnter={(e) => e.preventDefault()}
+                    // onDragLeave={(e) => e.preventDefault()}
+                             onDrop={dragDrop}
+                             onDragEnd={dragEnd}
+
+                />)
             })}
 
         </div>
