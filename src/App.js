@@ -88,21 +88,39 @@ function App() {
 
     }
     const dragEnd = (event) => {
-        const squareBeingReplacedId = +candyBeingReplaced.getAttribute("data-id")
-        const squareBeingDraggedId = +candyBeingDragged.getAttribute("data-id")
+        const candyBeingReplacedId = +candyBeingReplaced.getAttribute("data-id")
+        const candyBeingDraggedId = +candyBeingDragged.getAttribute("data-id")
         //switching squares
-        currentColorArrangement[squareBeingDraggedId] = candyBeingReplaced.style.backgroundColor
-        currentColorArrangement[squareBeingReplacedId] = candyBeingDragged.style.backgroundColor
+        currentColorArrangement[candyBeingDraggedId] = candyBeingReplaced.style.backgroundColor
+        currentColorArrangement[candyBeingReplacedId] = candyBeingDragged.style.backgroundColor
 
         //define the valid moves
         const validMove =
             [
                 //left and right
-                squareBeingDraggedId - 1, squareBeingDraggedId + 1,
+                candyBeingDraggedId - 1, candyBeingDraggedId + 1,
                 //up and down
-                squareBeingDraggedId + boardWidth, squareBeingDraggedId - boardWidth
+                candyBeingDraggedId + boardWidth, candyBeingDraggedId - boardWidth
             ]
-        const isValidMove =validMove.includes(squareBeingReplacedId)
+        const isValidMove =validMove.includes(candyBeingReplacedId)
+
+        const isARowOfFour = checkForRowOfFour()
+        const isAColumnOfFour = checkForColumnOfFour()
+        const isARowOfThree = checkForRowOfThree()
+        const isAColumnOfThree= checkForColumnOfThree()
+        //if the move is valid and if it's going to trigger one of the removing functions
+        if(candyBeingReplacedId && isValidMove && (isARowOfFour||isARowOfThree||isAColumnOfFour||isAColumnOfThree)){
+          //resetting the values ,so we can do another move after we won in this move
+            setCandyBeingDragged(null)
+            setCandyBeingReplaced(null)
+        }
+        else{
+            //move everything back
+            currentColorArrangement[candyBeingReplacedId]=candyBeingReplaced.style.backgroundColor
+            currentColorArrangement[candyBeingDraggedId]=candyBeingDragged.style.backgroundColor
+            //set the current color arrangement to its original value
+            setCurrentColorArrangement([...currentColorArrangement])
+        }
 
     }
 
