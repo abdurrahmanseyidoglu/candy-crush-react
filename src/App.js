@@ -72,6 +72,7 @@ function App() {
             }
         }
 
+
     }
     //drag and drop functions
     const dragStart = (event) => {
@@ -83,11 +84,21 @@ function App() {
 
     }
     const dragEnd = (event) => {
-        const squareBeingReplacedId = + candyBeingReplaced.getAttribute("data-id")
-        const squareBeingDraggedId = + candyBeingDragged.getAttribute("data-id")
+        const squareBeingReplacedId = +candyBeingReplaced.getAttribute("data-id")
+        const squareBeingDraggedId = +candyBeingDragged.getAttribute("data-id")
         //switching squares
-        currentColorArrangement[squareBeingDraggedId]=candyBeingReplaced.style.backgroundColor
-        currentColorArrangement[squareBeingReplacedId]=candyBeingDragged.style.backgroundColor
+        currentColorArrangement[squareBeingDraggedId] = candyBeingReplaced.style.backgroundColor
+        currentColorArrangement[squareBeingReplacedId] = candyBeingDragged.style.backgroundColor
+
+        //define the valid moves
+        const validMove =
+            [
+                //left and right
+                squareBeingDraggedId - 1, squareBeingDraggedId + 1,
+                //up and down
+                squareBeingDraggedId + boardWidth, squareBeingDraggedId - boardWidth
+            ]
+        const isValidMove =validMove.includes(squareBeingReplacedId)
 
     }
 
@@ -128,9 +139,9 @@ function App() {
                              data-id={index}
                              draggable={true}
                              onDragStart={dragStart}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDragEnter={(e) => e.preventDefault()}
-                    onDragLeave={(e) => e.preventDefault()}
+                             onDragOver={(e) => e.preventDefault()}
+                             onDragEnter={(e) => e.preventDefault()}
+                             onDragLeave={(e) => e.preventDefault()}
                              onDrop={dragDrop}
                              onDragEnd={dragEnd}
 
