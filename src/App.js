@@ -16,6 +16,7 @@ function App() {
             const currentColor = currentColorArrangement[i]
             if (columnOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 columnOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                return true
             }
         }
     }
@@ -26,6 +27,7 @@ function App() {
             const currentColor = currentColorArrangement[i]
             if (columnOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 columnOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                return true
             }
         }
     }
@@ -40,6 +42,7 @@ function App() {
             if (notValid.includes(i)) continue
             if (rowOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 rowOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                return true
             }
         }
     }
@@ -53,6 +56,7 @@ function App() {
             if (notValid.includes(i)) continue
             if (rowOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
                 rowOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                return true
             }
         }
     }
