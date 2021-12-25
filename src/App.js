@@ -1,7 +1,14 @@
 import {useEffect, useState} from "react";
+import blank from './candies/blank.png';
+import blueCandy from './candies/blue-candy.png'
+import greenCandy from './candies/green-candy.png'
+import orangeCandy from './candies/orange-candy.png'
+import purpleCandy from './candies/purple-candy.png'
+import redCandy from './candies/red-candy.png'
+import yellowCandy from './candies/yellow-candy.png'
 
 let boardWidth = 8
-const candyColors = ["blue", "green", "orange", 'purple', "red", 'yellow']
+const candyColors = [blueCandy, greenCandy, orangeCandy, purpleCandy, redCandy, yellowCandy]
 
 
 function App() {
@@ -15,7 +22,7 @@ function App() {
             const columnOfFour = [i, i + boardWidth, i + (boardWidth * 2), i + (boardWidth * 3)]
             const currentColor = currentColorArrangement[i]
             if (columnOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
-                columnOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                columnOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
         }
@@ -26,7 +33,7 @@ function App() {
             const columnOfThree = [i, i + boardWidth, i + (boardWidth * 2)]
             const currentColor = currentColorArrangement[i]
             if (columnOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
-                columnOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                columnOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
         }
@@ -41,7 +48,7 @@ function App() {
             const notValid = [6, 7, 8, 14, 15, 16, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64]
             if (notValid.includes(i)) continue
             if (rowOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
-                rowOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                rowOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
         }
@@ -55,7 +62,7 @@ function App() {
             const notValid = [7, 8, 15, 16, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
             if (notValid.includes(i)) continue
             if (rowOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
-                rowOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = '')
+                rowOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
         }
@@ -66,13 +73,13 @@ function App() {
         for (let i = 0; i <= 55; i++) {
             const firstRow = [0, 1, 2, 3, 4, 5, 6, 7]
             const isFirstRow = firstRow.includes(i)
-            if (isFirstRow && currentColorArrangement[i] === '') {
+            if (isFirstRow && currentColorArrangement[i] === blank) {
                 let randomNumber = Math.floor(Math.random() * candyColors.length)
                 currentColorArrangement[i] = candyColors[randomNumber]
             }
-            if (currentColorArrangement[i + boardWidth] === '') {
+            if (currentColorArrangement[i + boardWidth] === blank) {
                 currentColorArrangement[i + boardWidth] = currentColorArrangement[i]
-                currentColorArrangement[i] = ''
+                currentColorArrangement[i] = blank
             }
         }
 
@@ -91,8 +98,8 @@ function App() {
         const candyBeingReplacedId = +candyBeingReplaced.getAttribute("data-id")
         const candyBeingDraggedId = +candyBeingDragged.getAttribute("data-id")
         //switching squares
-        currentColorArrangement[candyBeingDraggedId] = candyBeingReplaced.style.backgroundColor
-        currentColorArrangement[candyBeingReplacedId] = candyBeingDragged.style.backgroundColor
+        currentColorArrangement[candyBeingDraggedId] = candyBeingReplaced.getAttribute('src')
+        currentColorArrangement[candyBeingReplacedId] = candyBeingDragged.getAttribute('src')
 
         //define the valid moves
         const validMove =
@@ -102,22 +109,21 @@ function App() {
                 //up and down
                 candyBeingDraggedId + boardWidth, candyBeingDraggedId - boardWidth
             ]
-        const isValidMove =validMove.includes(candyBeingReplacedId)
+        const isValidMove = validMove.includes(candyBeingReplacedId)
 
         const isARowOfFour = checkForRowOfFour()
         const isAColumnOfFour = checkForColumnOfFour()
         const isARowOfThree = checkForRowOfThree()
-        const isAColumnOfThree= checkForColumnOfThree()
+        const isAColumnOfThree = checkForColumnOfThree()
         //if the move is valid and if it's going to trigger one of the removing functions
-        if(candyBeingReplacedId && isValidMove && (isARowOfFour||isARowOfThree||isAColumnOfFour||isAColumnOfThree)){
-          //resetting the values ,so we can do another move after we won in this move
+        if (candyBeingReplacedId && isValidMove && (isARowOfFour || isARowOfThree || isAColumnOfFour || isAColumnOfThree)) {
+            //resetting the values ,so we can do another move after we won in this move
             setCandyBeingDragged(null)
             setCandyBeingReplaced(null)
-        }
-        else{
+        } else {
             //move everything back
-            currentColorArrangement[candyBeingReplacedId]=candyBeingReplaced.style.backgroundColor
-            currentColorArrangement[candyBeingDraggedId]=candyBeingDragged.style.backgroundColor
+            currentColorArrangement[candyBeingReplacedId] = candyBeingReplaced.getAttribute('src')
+            currentColorArrangement[candyBeingDraggedId] = candyBeingDragged.getAttribute('src')
             //set the current color arrangement to its original value
             setCurrentColorArrangement([...currentColorArrangement])
         }
@@ -156,7 +162,7 @@ function App() {
     return (<div className="app">
         <div className="game">
             {currentColorArrangement.map((candyColor, index) => {
-                return (<img key={index} style={{backgroundColor: candyColor}} alt="colors"
+                return (<img key={index} src={candyColor} alt={candyColor}
                     //adding drag-drop functionality
                              data-id={index}
                              draggable={true}
