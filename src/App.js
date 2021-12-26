@@ -23,7 +23,8 @@ function App() {
         for (let i = 0; i <= 39; i++) {
             const columnOfFour = [i, i + boardWidth, i + (boardWidth * 2), i + (boardWidth * 3)]
             const currentColor = currentColorArrangement[i]
-            if (columnOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+            const isBlank = currentColorArrangement[i] === blank
+            if (columnOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor) && !isBlank) {
                 //adding score if there is a deletions
                 setScoreDisplay((score) =>
                     score + 4
@@ -38,7 +39,8 @@ function App() {
         for (let i = 0; i <= 47; i++) {
             const columnOfThree = [i, i + boardWidth, i + (boardWidth * 2)]
             const currentColor = currentColorArrangement[i]
-            if (columnOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+            const isBlank = currentColorArrangement[i] === blank
+            if (columnOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)&& !isBlank) {
                 //adding score if there is a deletions
                 setScoreDisplay((score) =>
                     score + 3
@@ -54,10 +56,11 @@ function App() {
         for (let i = 0; i < 64; i++) {
             const rowOfFour = [i, i + 1, i + 2, i + 3]
             const currentColor = currentColorArrangement[i]
+            const isBlank = currentColorArrangement[i] === blank
             //preventing check repeating for every last three squares of every row
             const notValid = [6, 7, 8, 14, 15, 16, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64]
             if (notValid.includes(i)) continue
-            if (rowOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+            if (rowOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)&& !isBlank) {
                 //adding score if there is a deletions
                 setScoreDisplay((score) =>
                     score + 4
@@ -72,10 +75,11 @@ function App() {
         for (let i = 0; i < 64; i++) {
             const rowOfThree = [i, i + 1, i + 2]
             const currentColor = currentColorArrangement[i]
+            const isBlank = currentColorArrangement[i] === blank
             //preventing check repeating for every last two squares of every row
             const notValid = [7, 8, 15, 16, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
             if (notValid.includes(i)) continue
-            if (rowOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+            if (rowOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)&& !isBlank) {
                 //adding score if there is a deletions
                 setScoreDisplay((score) =>
                     score + 3
@@ -173,7 +177,7 @@ function App() {
 
 
             setCurrentColorArrangement([...currentColorArrangement])
-        }, 4000)
+        }, 1000)
         return () => clearInterval(timer)
     }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveIntoSquareBelow, currentColorArrangement])
 
