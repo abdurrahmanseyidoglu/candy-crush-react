@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import Score from './components/Score'
 import blank from './candies/blank.png';
 import blueCandy from './candies/blue-candy.png'
 import greenCandy from './candies/green-candy.png'
@@ -15,6 +16,7 @@ function App() {
     const [currentColorArrangement, setCurrentColorArrangement] = useState([])
     const [candyBeingDragged, setCandyBeingDragged] = useState(null)
     const [candyBeingReplaced, setCandyBeingReplaced] = useState(null)
+    const [scoreDisplay, setScoreDisplay] = useState(0)
 
     //check for columns of four of the same color
     const checkForColumnOfFour = () => {
@@ -22,6 +24,10 @@ function App() {
             const columnOfFour = [i, i + boardWidth, i + (boardWidth * 2), i + (boardWidth * 3)]
             const currentColor = currentColorArrangement[i]
             if (columnOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+                //adding score if there is a deletions
+                setScoreDisplay((score) =>
+                    score + 4
+                )
                 columnOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
@@ -33,6 +39,10 @@ function App() {
             const columnOfThree = [i, i + boardWidth, i + (boardWidth * 2)]
             const currentColor = currentColorArrangement[i]
             if (columnOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+                //adding score if there is a deletions
+                setScoreDisplay((score) =>
+                    score + 3
+                )
                 columnOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
@@ -48,6 +58,10 @@ function App() {
             const notValid = [6, 7, 8, 14, 15, 16, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55, 62, 63, 64]
             if (notValid.includes(i)) continue
             if (rowOfFour.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+                //adding score if there is a deletions
+                setScoreDisplay((score) =>
+                    score + 4
+                )
                 rowOfFour.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
@@ -62,6 +76,10 @@ function App() {
             const notValid = [7, 8, 15, 16, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55, 63, 64]
             if (notValid.includes(i)) continue
             if (rowOfThree.every(indexOfColor => currentColorArrangement[indexOfColor] === currentColor)) {
+                //adding score if there is a deletions
+                setScoreDisplay((score) =>
+                    score + 3
+                )
                 rowOfThree.forEach(indexOfColor => currentColorArrangement[indexOfColor] = blank)
                 return true
             }
@@ -110,7 +128,6 @@ function App() {
                 candyBeingDraggedId + boardWidth, candyBeingDraggedId - boardWidth
             ]
         const isValidMove = validMove.includes(candyBeingReplacedId)
-
         const isARowOfFour = checkForRowOfFour()
         const isAColumnOfFour = checkForColumnOfFour()
         const isARowOfThree = checkForRowOfThree()
@@ -126,6 +143,7 @@ function App() {
             currentColorArrangement[candyBeingDraggedId] = candyBeingDragged.getAttribute('src')
             //set the current color arrangement to its original value
             setCurrentColorArrangement([...currentColorArrangement])
+
         }
 
     }
@@ -155,7 +173,7 @@ function App() {
 
 
             setCurrentColorArrangement([...currentColorArrangement])
-        }, 100)
+        }, 4000)
         return () => clearInterval(timer)
     }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveIntoSquareBelow, currentColorArrangement])
 
@@ -177,6 +195,7 @@ function App() {
             })}
 
         </div>
+        <Score score={scoreDisplay}/>
     </div>);
 }
 
