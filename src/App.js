@@ -116,41 +116,42 @@ function App() {
         setCandyBeingReplaced(event.target)
 
     }
-    const dragEnd = (event) => {
-        const candyBeingReplacedId = +candyBeingReplaced.getAttribute("data-id")
-        const candyBeingDraggedId = +candyBeingDragged.getAttribute("data-id")
-        //switching squares
-        currentColorArrangement[candyBeingDraggedId] = candyBeingReplaced.getAttribute('src')
-        currentColorArrangement[candyBeingReplacedId] = candyBeingDragged.getAttribute('src')
+    const dragEnd = (e) => {
+        const candyBeingDraggedId = parseInt(candyBeingDragged.getAttribute('data-id'))
+        const candyBeingReplacedId = parseInt(candyBeingReplaced.getAttribute('data-id'))
 
-        //define the valid moves
-        const validMove =
-            [
-                //left and right
-                candyBeingDraggedId - 1, candyBeingDraggedId + 1,
-                //up and down
-                candyBeingDraggedId + boardWidth, candyBeingDraggedId - boardWidth
-            ]
-        const isValidMove = validMove.includes(candyBeingReplacedId)
-        const isARowOfFour = checkForRowOfFour()
-        const isAColumnOfFour = checkForColumnOfFour()
-        const isARowOfThree = checkForRowOfThree()
-        const isAColumnOfThree = checkForColumnOfThree()
-        //if the move is valid and if it's going to trigger one of the removing functions
-        if (candyBeingReplacedId && isValidMove && (isARowOfFour || isARowOfThree || isAColumnOfFour || isAColumnOfThree)) {
-            //resetting the values ,so we can do another move after we won in this move
+        const validMoves = [
+          candyBeingDraggedId - 1,
+          candyBeingDraggedId - boardWidth,
+          candyBeingDraggedId + 1,
+          candyBeingDraggedId + boardWidth
+        ]
+
+        const validMove = validMoves.includes(candyBeingReplacedId)
+
+
+
+
+        if (validMove) {
+          currentColorArrangement[candyBeingReplacedId] = candyBeingDragged.getAttribute('src')
+          currentColorArrangement[candyBeingDraggedId] = candyBeingReplaced.getAttribute('src')
+
+          const isAColumnOfFour = checkForColumnOfFour()
+          const isARowOfFour = checkForRowOfFour()
+          const isAColumnOfThree = checkForColumnOfThree()
+          const isARowOfThree = checkForRowOfThree()
+
+          if (candyBeingReplacedId &&
+            (isAColumnOfFour || isARowOfFour || isAColumnOfThree || isARowOfThree)) {
             setCandyBeingDragged(null)
-            setCandyBeingReplaced(null)
-        } else {
-            //move everything back
+            setCandyBeingDragged(null)
+          } else {
             currentColorArrangement[candyBeingReplacedId] = candyBeingReplaced.getAttribute('src')
             currentColorArrangement[candyBeingDraggedId] = candyBeingDragged.getAttribute('src')
-            //set the current color arrangement to its original value
             setCurrentColorArrangement([...currentColorArrangement])
-
+          }
         }
-
-    }
+      }
 
     //creating an array of 8*8 = 64 square each one is a random color from the candyColors array
     const createBoard = () => {
@@ -177,7 +178,7 @@ function App() {
 
 
             setCurrentColorArrangement([...currentColorArrangement])
-        }, 1000)
+        }, 200)
         return () => clearInterval(timer)
     }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveIntoSquareBelow, currentColorArrangement])
 
