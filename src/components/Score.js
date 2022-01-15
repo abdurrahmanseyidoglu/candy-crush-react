@@ -1,7 +1,8 @@
+import "./Score.css"
 const score = ({score})=>{
 return(
     <div className="score">
-        <h2>{score}</h2>
+        <h2 >{score}</h2>
     </div>
 )
 }

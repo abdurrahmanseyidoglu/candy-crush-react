@@ -183,6 +183,7 @@ function App() {
     }, [checkForColumnOfFour, checkForRowOfFour, checkForColumnOfThree, checkForRowOfThree, moveIntoSquareBelow, currentColorArrangement])
 
     return (<div className="app">
+         <Score score={scoreDisplay}/>
         <div className="game">
             {currentColorArrangement.map((candyColor, index) => {
                 return (<img key={index} src={candyColor} alt={candyColor}
@@ -200,7 +201,7 @@ function App() {
             })}
 
         </div>
-        <Score score={scoreDisplay}/>
+
     </div>);
 }
 
