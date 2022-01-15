@@ -1,4 +1,4 @@
-# a candy crush game simple clone in react.js to get used to react hooks, props and file structure in react.
+# a candy crush game simple clone in react.js
 
 <br/>
 
