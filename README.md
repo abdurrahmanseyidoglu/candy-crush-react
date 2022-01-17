@@ -6,7 +6,7 @@
 - open terminal/git bash 
 - type : ```git clone https://github.com/abdurrahmanseyidoglu/candy-crush-react```
 - then : ```cd candy-crush-react```
-- then : ```yarn start``` or ```npm install```
+- then : ```yarn``` or ```npm install```
 - then : ```yarn start``` (if you used ```yarn start``` previously) or ```npm start``` (if you used ```npm install``` previously)
 
 ## scren shot of the project : 
