@@ -2,7 +2,7 @@
 
 <br/>
 
-[Deom](https://abdurrahmanseyidoglu.github.io/candy-crush-react/)
+## [Demo](https://abdurrahmanseyidoglu.github.io/candy-crush-react/)
 ## How to run:
 - open terminal/git bash 
 - type : ```git clone https://github.com/abdurrahmanseyidoglu/candy-crush-react```
